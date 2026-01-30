@@ -98,7 +98,7 @@
     .q8 { left: 5%; top: 75%; font-size: clamp(10px, 2.5vw, 13px); color: #94a3b8; animation: float8 3.1s ease-in-out infinite 0.6s; }
     .q9 { left: 60%; top: 78%; font-size: clamp(13px, 3.5vw, 18px); color: #0d9488; animation: float9 3.3s ease-in-out infinite 0.8s; }
 
-    /* 로고 레이어 */
+    /* 로고 레이어 (모바일용) */
     .logo-layer {
       position: absolute;
       top: 0;
@@ -124,42 +124,86 @@
       height: auto;
     }
 
-    /* 수동 버튼 (fallback) */
-    .manual-buttons {
+    /* 스토어 선택 레이어 (PC/태블릿용) */
+    .store-select-layer {
       position: absolute;
-      bottom: 80px;
-      left: 50%;
-      transform: translateX(-50%);
-      display: none;
-      gap: 12px;
-      z-index: 20;
-    }
-
-    .manual-buttons.show {
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
       display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      transition: opacity 0.8s ease-in;
+      z-index: 5;
+      gap: 40px;
     }
 
-    .store-btn {
-      padding: 12px 24px;
-      border-radius: 12px;
-      font-size: 14px;
+    .store-select-layer.fade-in {
+      opacity: 1;
+    }
+
+    .store-select-title {
+      font-size: 24px;
+      color: #374151;
       font-weight: 600;
+    }
+
+    .store-buttons {
+      display: flex;
+      gap: 40px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .store-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      padding: 32px 48px;
+      border-radius: 24px;
       text-decoration: none;
-      transition: transform 0.2s;
+      transition: transform 0.2s, box-shadow 0.2s;
+      cursor: pointer;
     }
 
-    .store-btn:hover {
-      transform: scale(1.05);
+    .store-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.15);
     }
 
-    .store-btn.ios {
-      background: #000;
-      color: #fff;
+    .store-card.android {
+      background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
     }
 
-    .store-btn.android {
-      background: #14b8a6;
-      color: #fff;
+    .store-card.ios {
+      background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+    }
+
+    .store-icon {
+      width: 80px;
+      height: 80px;
+    }
+
+    .store-card .label {
+      font-size: 20px;
+      font-weight: 700;
+    }
+
+    .store-card.android .label {
+      color: #2e7d32;
+    }
+
+    .store-card.ios .label {
+      color: #1f2937;
+    }
+
+    .store-card .sub-label {
+      font-size: 14px;
+      color: #6b7280;
     }
   </style>
 </head>
@@ -182,15 +226,37 @@
       <div class="question q9">흡연구역 있어요?</div>
     </div>
 
-    <!-- 로고 레이어 -->
+    <!-- 로고 레이어 (모바일용) -->
     <div class="logo-layer" id="logoLayer">
       <img src="https://raw.githubusercontent.com/cjtopapp/toptop-entrance/main/logo.png" alt="청주탑병원">
     </div>
 
-    <!-- 수동 버튼 (PC용 fallback) -->
-    <div class="manual-buttons" id="manualButtons">
-      <a href="https://apps.apple.com/kr/app/%EC%B2%AD%EC%A3%BC%ED%83%91%EB%B3%91%EC%9B%90/id6746877257" class="store-btn ios">App Store</a>
-      <a href="https://play.google.com/store/apps/details?id=com.cjtoph.app.cjtoph&pcampaignid=web_share" class="store-btn android">Google Play</a>
+    <!-- 스토어 선택 레이어 (PC/태블릿용) -->
+    <div class="store-select-layer" id="storeSelectLayer">
+      <p class="store-select-title">앱 다운로드</p>
+      <div class="store-buttons">
+        <a href="https://play.google.com/store/apps/details?id=com.cjtoph.app.cjtoph&pcampaignid=web_share" class="store-card android">
+          <svg class="store-icon" viewBox="0 0 24 24" fill="#3DDC84">
+            <path d="M17.523 2.047a.5.5 0 0 0-.27.073L3.711 10.31a1 1 0 0 0 0 1.704l13.541 8.19a.5.5 0 0 0 .758-.43V2.477a.5.5 0 0 0-.487-.43zM3 10.31v1.704L1.143 11z"/>
+            <path d="M3.711 10.31L1.143 11l2.568.69 13.541-8.19a.5.5 0 0 0-.27-.073.5.5 0 0 0-.217.053L3.711 10.31z" opacity=".5"/>
+          </svg>
+          <svg class="store-icon" viewBox="0 0 512 512" style="margin-top:-60px">
+            <path fill="#2196F3" d="M325.3 234.3L104.6 13l280.8 161.2-60.1 60.1z"/>
+            <path fill="#4CAF50" d="M47 0C34 6.8 25.3 19.2 25.3 35.3v441.3c0 16.1 8.7 28.5 21.7 35.3l256.6-256L47 0z"/>
+            <path fill="#F44336" d="M325.3 277.7L47 512l258.9-234.3 19.4-19.4 60.1 60.1z"/>
+            <path fill="#FFC107" d="M486.7 256L385.4 195l-60.1 60.1 60.1 60.1 101.3-59.2z"/>
+          </svg>
+          <span class="label">삼성 / 안드로이드</span>
+          <span class="sub-label">Google Play</span>
+        </a>
+        <a href="https://apps.apple.com/kr/app/%EC%B2%AD%EC%A3%BC%ED%83%91%EB%B3%91%EC%9B%90/id6746877257" class="store-card ios">
+          <svg class="store-icon" viewBox="0 0 384 512">
+            <path fill="#000" d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/>
+          </svg>
+          <span class="label">아이폰 / 아이패드</span>
+          <span class="sub-label">App Store</span>
+        </a>
+      </div>
     </div>
   </div>
 
@@ -217,21 +283,10 @@
       });
     }
 
-    // 리다이렉트
-    function redirect() {
-      const os = getOS();
-      
-      if (os === 'ios') {
-        window.location.href = IOS_URL;
-      } else if (os === 'android') {
-        window.location.href = ANDROID_URL;
-      } else {
-        document.getElementById('manualButtons').classList.add('show');
-      }
-    }
-
     // 실행
     document.addEventListener('DOMContentLoaded', () => {
+      const os = getOS();
+      
       // 0초: 질문들 표시 시작
       showQuestions();
       
@@ -240,13 +295,27 @@
         document.getElementById('kineticLayer').classList.add('fade-out');
       }, 2200);
 
-      // 3초: 로고 fade in
+      // 3초: OS에 따라 다른 화면 표시
       setTimeout(() => {
-        document.getElementById('logoLayer').classList.add('fade-in');
+        if (os === 'unknown') {
+          // PC/태블릿: 스토어 선택 화면
+          document.getElementById('storeSelectLayer').classList.add('fade-in');
+        } else {
+          // 모바일: 로고 표시
+          document.getElementById('logoLayer').classList.add('fade-in');
+        }
       }, 3000);
 
-      // 4.5초: 리다이렉트
-      setTimeout(redirect, 4500);
+      // 4.5초: 모바일만 자동 리다이렉트
+      if (os !== 'unknown') {
+        setTimeout(() => {
+          if (os === 'ios') {
+            window.location.href = IOS_URL;
+          } else if (os === 'android') {
+            window.location.href = ANDROID_URL;
+          }
+        }, 4500);
+      }
     });
   </script>
 </body>
