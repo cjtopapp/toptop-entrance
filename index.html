@@ -31,6 +31,7 @@
       opacity: 1;
       transition: opacity 0.8s ease-out;
       z-index: 10;
+      pointer-events: none;
     }
 
     .kinetic-layer.fade-out {
@@ -111,6 +112,7 @@
       opacity: 0;
       transition: opacity 0.8s ease-in;
       z-index: 5;
+      pointer-events: none;
     }
 
     .logo-layer.fade-in {
@@ -141,12 +143,14 @@
       align-items: center;
       opacity: 0;
       transition: opacity 0.8s ease-in;
-      z-index: 5;
+      z-index: 20;
       gap: 40px;
+      pointer-events: none;
     }
 
     .store-select-layer.fade-in {
       opacity: 1;
+      pointer-events: auto;
     }
 
     .store-select-title {
@@ -242,7 +246,7 @@
 
     <!-- 스토어 선택 레이어 (PC/태블릿용) -->
     <div class="store-select-layer" id="storeSelectLayer">
-      <p class="store-select-title">앱 다운로드</p>
+      <p class="store-select-title">어플 다운로드</p>
       <div class="store-buttons">
         <a href="https://play.google.com/store/apps/details?id=com.cjtoph.app.cjtoph&pcampaignid=web_share" class="store-card android">
           <svg class="store-icon" viewBox="0 0 512 512">
