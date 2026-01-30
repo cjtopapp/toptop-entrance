@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>청주탑병원 앱 다운로드</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Malgun Gothic', sans-serif;
+      overflow: hidden;
+      background: #ffffff;
+      min-height: 100vh;
+    }
+
+    .container {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* 키네틱 아트 레이어 */
+    .kinetic-layer {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 1;
+      transition: opacity 0.8s ease-out;
+      z-index: 10;
+    }
+
+    .kinetic-layer.fade-out {
+      opacity: 0;
+    }
+
+    /* 배경 블러 원 */
+    .bg-circle-1 {
+      position: absolute;
+      top: 15%;
+      left: 8%;
+      width: 150px;
+      height: 150px;
+      background: #99f6e4;
+      border-radius: 50%;
+      opacity: 0.3;
+      filter: blur(40px);
+    }
+
+    .bg-circle-2 {
+      position: absolute;
+      bottom: 10%;
+      right: 10%;
+      width: 200px;
+      height: 200px;
+      background: #5eead4;
+      border-radius: 50%;
+      opacity: 0.2;
+      filter: blur(50px);
+    }
+
+    /* 질문들 */
+    .question {
+      position: absolute;
+      white-space: nowrap;
+      opacity: 0;
+      transition: opacity 0.5s ease-out;
+      cursor: default;
+    }
+
+    .question.show {
+      opacity: 1;
+    }
+
+    /* 플로팅 애니메이션 */
+    @keyframes float0 { 0%, 100% { transform: translateY(0px) rotate(-3deg); } 50% { transform: translateY(-10px) rotate(-2deg); } }
+    @keyframes float1 { 0%, 100% { transform: translateY(0px) rotate(2deg); } 50% { transform: translateY(-8px) rotate(3deg); } }
+    @keyframes float2 { 0%, 100% { transform: translateY(0px) rotate(1deg); } 50% { transform: translateY(-12px) rotate(2deg); } }
+    @keyframes float3 { 0%, 100% { transform: translateY(0px) rotate(-2deg); } 50% { transform: translateY(-6px) rotate(-1deg); } }
+    @keyframes float4 { 0%, 100% { transform: translateY(0px) rotate(3deg); } 50% { transform: translateY(-9px) rotate(4deg); } }
+    @keyframes float5 { 0%, 100% { transform: translateY(0px) rotate(-1deg); } 50% { transform: translateY(-11px) rotate(0deg); } }
+    @keyframes float6 { 0%, 100% { transform: translateY(0px) rotate(-2deg); } 50% { transform: translateY(-7px) rotate(-1deg); } }
+    @keyframes float7 { 0%, 100% { transform: translateY(0px) rotate(2deg); } 50% { transform: translateY(-10px) rotate(3deg); } }
+    @keyframes float8 { 0%, 100% { transform: translateY(0px) rotate(1deg); } 50% { transform: translateY(-8px) rotate(2deg); } }
+    @keyframes float9 { 0%, 100% { transform: translateY(0px) rotate(-3deg); } 50% { transform: translateY(-9px) rotate(-2deg); } }
+
+    .q0 { left: 5%; top: 8%; font-size: clamp(18px, 5vw, 28px); color: #0d9488; animation: float0 3s ease-in-out infinite; }
+    .q1 { left: 65%; top: 5%; font-size: clamp(12px, 3vw, 16px); color: #64748b; animation: float1 3.2s ease-in-out infinite 0.5s; }
+    .q2 { left: 12%; top: 22%; font-size: clamp(16px, 4vw, 22px); color: #14b8a6; animation: float2 3.4s ease-in-out infinite 1s; }
+    .q3 { left: 70%; top: 20%; font-size: clamp(11px, 2.5vw, 14px); color: #94a3b8; animation: float3 3.1s ease-in-out infinite 0.3s; }
+    .q4 { left: 3%; top: 40%; font-size: clamp(13px, 3.5vw, 18px); color: #2dd4bf; animation: float4 3.3s ease-in-out infinite 0.7s; }
+    .q5 { left: 50%; top: 36%; font-size: clamp(20px, 6vw, 32px); color: #0f766e; font-weight: 700; animation: float5 3.5s ease-in-out infinite 0.2s; }
+    .q6 { left: 8%; top: 58%; font-size: clamp(12px, 3vw, 16px); color: #64748b; animation: float6 3.2s ease-in-out infinite 0.9s; }
+    .q7 { left: 55%; top: 60%; font-size: clamp(14px, 4vw, 20px); color: #14b8a6; animation: float7 3.4s ease-in-out infinite 0.4s; }
+    .q8 { left: 5%; top: 75%; font-size: clamp(10px, 2.5vw, 13px); color: #94a3b8; animation: float8 3.1s ease-in-out infinite 0.6s; }
+    .q9 { left: 60%; top: 78%; font-size: clamp(13px, 3.5vw, 18px); color: #0d9488; animation: float9 3.3s ease-in-out infinite 0.8s; }
+
+    /* 로고 레이어 */
+    .logo-layer {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      transition: opacity 0.8s ease-in;
+      z-index: 5;
+    }
+
+    .logo-layer.fade-in {
+      opacity: 1;
+    }
+
+    .logo-layer img {
+      max-width: 80%;
+      max-height: 40%;
+      width: auto;
+      height: auto;
+    }
+
+    /* 수동 버튼 (fallback) */
+    .manual-buttons {
+      position: absolute;
+      bottom: 80px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: none;
+      gap: 12px;
+      z-index: 20;
+    }
+
+    .manual-buttons.show {
+      display: flex;
+    }
+
+    .store-btn {
+      padding: 12px 24px;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: transform 0.2s;
+    }
+
+    .store-btn:hover {
+      transform: scale(1.05);
+    }
+
+    .store-btn.ios {
+      background: #000;
+      color: #fff;
+    }
+
+    .store-btn.android {
+      background: #14b8a6;
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- 키네틱 아트 레이어 -->
+    <div class="kinetic-layer" id="kineticLayer">
+      <div class="bg-circle-1"></div>
+      <div class="bg-circle-2"></div>
+
+      <div class="question q0">화장실 어디에요?</div>
+      <div class="question q1">편의점 어디 있어요?</div>
+      <div class="question q2">주차장 어디로 가요?</div>
+      <div class="question q3">주차비 얼마예요?</div>
+      <div class="question q4">엘리베이터 어디 있어요?</div>
+      <div class="question q5">정형외과 몇 층이에요?</div>
+      <div class="question q6">물리치료실 어떻게 가요?</div>
+      <div class="question q7">원무과 어디에요?</div>
+      <div class="question q8">영상의학과 어디에요?</div>
+      <div class="question q9">흡연구역 있어요?</div>
+    </div>
+
+    <!-- 로고 레이어 -->
+    <div class="logo-layer" id="logoLayer">
+      <img src="https://raw.githubusercontent.com/cjtopapp/toptop-entrance/main/logo.png" alt="청주탑병원">
+    </div>
+
+    <!-- 수동 버튼 (PC용 fallback) -->
+    <div class="manual-buttons" id="manualButtons">
+      <a href="https://apps.apple.com/kr/app/%EC%B2%AD%EC%A3%BC%ED%83%91%EB%B3%91%EC%9B%90/id6746877257" class="store-btn ios">App Store</a>
+      <a href="https://play.google.com/store/apps/details?id=com.cjtoph.app.cjtoph&pcampaignid=web_share" class="store-btn android">Google Play</a>
+    </div>
+  </div>
+
+  <script>
+    // URL 정의
+    const IOS_URL = 'https://apps.apple.com/kr/app/%EC%B2%AD%EC%A3%BC%ED%83%91%EB%B3%91%EC%9B%90/id6746877257';
+    const ANDROID_URL = 'https://play.google.com/store/apps/details?id=com.cjtoph.app.cjtoph&pcampaignid=web_share';
+
+    // OS 감지
+    function getOS() {
+      const ua = navigator.userAgent;
+      if (/iPhone|iPad|iPod/i.test(ua)) return 'ios';
+      if (/Android/i.test(ua)) return 'android';
+      return 'unknown';
+    }
+
+    // 질문 순차적 표시
+    function showQuestions() {
+      const questions = document.querySelectorAll('.question');
+      questions.forEach((q, i) => {
+        setTimeout(() => {
+          q.classList.add('show');
+        }, i * 80);
+      });
+    }
+
+    // 리다이렉트
+    function redirect() {
+      const os = getOS();
+      
+      if (os === 'ios') {
+        window.location.href = IOS_URL;
+      } else if (os === 'android') {
+        window.location.href = ANDROID_URL;
+      } else {
+        document.getElementById('manualButtons').classList.add('show');
+      }
+    }
+
+    // 실행
+    document.addEventListener('DOMContentLoaded', () => {
+      // 0초: 질문들 표시 시작
+      showQuestions();
+      
+      // 1.2초: 키네틱 fade out 시작
+      setTimeout(() => {
+        document.getElementById('kineticLayer').classList.add('fade-out');
+      }, 1200);
+
+      // 2초: 로고 fade in
+      setTimeout(() => {
+        document.getElementById('logoLayer').classList.add('fade-in');
+      }, 2000);
+
+      // 3.5초: 리다이렉트
+      setTimeout(redirect, 3500);
+    });
+  </script>
+</body>
+</html>
