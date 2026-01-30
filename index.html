@@ -235,18 +235,18 @@
       // 0초: 질문들 표시 시작
       showQuestions();
       
-      // 1.2초: 키네틱 fade out 시작
+      // 2.2초: 키네틱 fade out 시작
       setTimeout(() => {
         document.getElementById('kineticLayer').classList.add('fade-out');
-      }, 1200);
+      }, 2200);
 
-      // 2초: 로고 fade in
+      // 3초: 로고 fade in
       setTimeout(() => {
         document.getElementById('logoLayer').classList.add('fade-in');
-      }, 2000);
+      }, 3000);
 
-      // 3.5초: 리다이렉트
-      setTimeout(redirect, 3500);
+      // 4.5초: 리다이렉트
+      setTimeout(redirect, 4500);
     });
   </script>
 </body>
